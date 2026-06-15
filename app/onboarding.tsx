@@ -76,7 +76,7 @@ export default function OnboardingScreen() {
             </View>
           </View>
 
-          <Link href="/" asChild>
+          <Link href="/sign-up" asChild>
             <TouchableOpacity activeOpacity={0.88} style={styles.button}>
               <View
                 className="absolute inset-0 items-center justify-center"
