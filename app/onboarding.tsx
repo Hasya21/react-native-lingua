@@ -1,4 +1,5 @@
-import { Link } from "expo-router";
+import { useAuth } from "@clerk/expo";
+import { Link, Redirect } from "expo-router";
 import {
   Image,
   ScrollView,
@@ -12,6 +13,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants/images";
 
 export default function OnboardingScreen() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  if (isSignedIn) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -76,7 +87,7 @@ export default function OnboardingScreen() {
             </View>
           </View>
 
-          <Link href="/" asChild>
+          <Link href="/sign-up" asChild>
             <TouchableOpacity activeOpacity={0.88} style={styles.button}>
               <View
                 className="absolute inset-0 items-center justify-center"
