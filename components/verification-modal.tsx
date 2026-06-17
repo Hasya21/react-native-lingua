@@ -12,15 +12,19 @@ import {
 
 type VerificationModalProps = {
   email: string;
+  error?: string | null;
+  isLoading?: boolean;
   visible: boolean;
   onClose: () => void;
-  onComplete: () => void;
+  onComplete: (code: string) => Promise<void>;
 };
 
 const CODE_LENGTH = 6;
 
 export function VerificationModal({
   email,
+  error,
+  isLoading = false,
   visible,
   onClose,
   onComplete,
@@ -38,13 +42,13 @@ export function VerificationModal({
     return () => clearTimeout(focusTimer);
   }, [visible]);
 
-  function handleCodeChange(value: string) {
+  async function handleCodeChange(value: string) {
     const nextCode = value.replace(/\D/g, "").slice(0, CODE_LENGTH);
     setCode(nextCode);
 
     if (nextCode.length === CODE_LENGTH) {
       inputRef.current?.blur();
-      onComplete();
+      await onComplete(nextCode);
     }
   }
 
@@ -99,6 +103,7 @@ export function VerificationModal({
                 accessibilityLabel="Six digit verification code"
                 autoFocus
                 caretHidden
+                editable={!isLoading}
                 keyboardType="number-pad"
                 maxLength={CODE_LENGTH}
                 onChangeText={handleCodeChange}
@@ -110,11 +115,16 @@ export function VerificationModal({
 
             <TouchableOpacity
               activeOpacity={0.8}
+              disabled={isLoading}
               className="mt-6 items-center py-2"
               onPress={() => inputRef.current?.focus()}
             >
-              <Text className="font-poppins-medium text-[14px] text-lingua-deep-purple">
-                Enter the 6-digit code
+              <Text
+                className={`text-center font-poppins-medium text-[14px] ${
+                  error ? "text-[#D92D20]" : "text-lingua-deep-purple"
+                }`}
+              >
+                {error ?? (isLoading ? "Verifying..." : "Enter the 6-digit code")}
               </Text>
             </TouchableOpacity>
           </Pressable>
