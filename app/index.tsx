@@ -1,6 +1,6 @@
 import { useAuth, useUser } from "@clerk/expo";
-import { Redirect } from "expo-router";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Link, Redirect } from "expo-router";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const { isLoaded, isSignedIn, signOut } = useAuth();
@@ -28,15 +28,40 @@ export default function Index() {
         Signed in as {user?.primaryEmailAddress?.emailAddress}
       </Text>
 
+      <Link href="/language-selection" asChild>
+        <TouchableOpacity
+          accessibilityRole="button"
+          activeOpacity={0.85}
+          style={styles.languageButton}
+        >
+          <Text className="font-poppins-semibold text-base text-white">
+            Choose a language
+          </Text>
+        </TouchableOpacity>
+      </Link>
+
       <TouchableOpacity
         activeOpacity={0.85}
-        className="mt-8 rounded-2xl bg-lingua-deep-purple px-7 py-4"
+        className="mt-4 rounded-2xl border border-border bg-white px-7 py-4"
         onPress={() => signOut()}
       >
-        <Text className="font-poppins-semibold text-base text-white">
+        <Text className="font-poppins-semibold text-base text-text-primary">
           Sign out
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  languageButton: {
+    alignItems: "center",
+    backgroundColor: "#5B3BF6",
+    borderRadius: 18,
+    boxShadow: "0 4px 0 #4727D9",
+    height: 58,
+    justifyContent: "center",
+    marginTop: 32,
+    paddingHorizontal: 28,
+  },
+});
