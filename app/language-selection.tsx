@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "@/constants/images";
 import { defaultLanguageCode, languages } from "@/data/languages";
+import { useLanguageStore } from "@/store/language-store";
 import type { LanguageCode } from "@/types/learning";
 
 export default function LanguageSelectionScreen() {
@@ -21,6 +22,9 @@ export default function LanguageSelectionScreen() {
   const [query, setQuery] = useState("");
   const [selectedCode, setSelectedCode] =
     useState<LanguageCode>(defaultLanguageCode);
+  const setSelectedLanguage = useLanguageStore(
+    (state) => state.setSelectedLanguage,
+  );
 
   const filteredLanguages = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -135,7 +139,10 @@ export default function LanguageSelectionScreen() {
         <TouchableOpacity
           accessibilityRole="button"
           activeOpacity={0.88}
-          onPress={() => router.replace("/")}
+          onPress={() => {
+            setSelectedLanguage(selectedCode);
+            router.replace("/");
+          }}
           style={styles.confirmButton}
         >
           <Text className="font-poppins-semibold text-[17px] text-white">
