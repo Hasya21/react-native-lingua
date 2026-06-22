@@ -65,9 +65,8 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
               size={27}
             />
             <Text
-              className={`font-poppins-medium text-[11px] ${
-                isFocused ? "text-[#6547F5]" : "text-[#71809E]"
-              }`}
+              className="font-poppins-medium text-[11px]"
+              style={{ color: isFocused ? ACTIVE_COLOR : INACTIVE_COLOR }}
             >
               {details.label}
             </Text>

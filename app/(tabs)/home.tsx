@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@clerk/expo";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -20,6 +21,7 @@ const PLAN_ITEMS = [
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { user } = useUser();
   const selectedLanguageCode = useLanguageStore((state) => state.selectedLanguage);
   const language = languages.find((item) => item.code === selectedLanguageCode) ?? languages[0];
@@ -68,7 +70,12 @@ export default function HomeScreen() {
         <Text className="font-poppins-medium text-[18px] text-white">
           {unit?.level ?? "A1"} · Unit {unit?.order ?? 1}
         </Text>
-        <TouchableOpacity activeOpacity={0.85} className="absolute bottom-4 left-5 h-[43px] w-[108px] items-center justify-center rounded-[14px] bg-white">
+        <TouchableOpacity
+          accessibilityLabel="Continue learning"
+          activeOpacity={0.85}
+          className="absolute bottom-4 left-5 h-[43px] w-[108px] items-center justify-center rounded-[14px] bg-white"
+          onPress={() => router.push("/learn")}
+        >
           <Text className="font-poppins-semibold text-[15px] text-[#6847F6]">Continue</Text>
         </TouchableOpacity>
         <Image className="absolute -bottom-[22px] -right-[5px] h-[174px] w-[174px]" contentFit="contain" source={images.palace} />
@@ -76,7 +83,11 @@ export default function HomeScreen() {
 
       <View className="mt-6 flex-row items-center justify-between">
         <Text className="font-poppins-semibold text-[18px] text-text-primary">Today&apos;s plan</Text>
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity
+          accessibilityLabel="View all lessons"
+          activeOpacity={0.7}
+          onPress={() => router.push("/learn")}
+        >
           <Text className="font-poppins-semibold text-[15px] text-[#6547F5]">View all</Text>
         </TouchableOpacity>
       </View>
